@@ -9,5 +9,5 @@ import retrofit2.http.GET
 interface APIService {
 
     @GET("users")
-    fun getUserList(): Call<JsonArray >
+    fun getUserList(): Call<JsonArray>
 }
