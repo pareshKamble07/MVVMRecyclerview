@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MVVMRecycler</string>
+    <string name="reset">reset</string>
 </resources>

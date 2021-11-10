@@ -5,19 +5,24 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
+
+
 class DataModel {
-
-    @SerializedName("login")
+    @SerializedName("result")
     @Expose
-    public var name: String? = null
+    private var result: Result? = null
 
-    @SerializedName("avatar_url")
-    @Expose
-    public var image: String? = null
+    fun getResult(): Result? {
+        return result
+    }
 
+    fun setResult(result: Result?) {
+        this.result = result
+    }
 
-
-
+    override fun toString(): String {
+        return "DataModel(result=$result)"
+    }
 
 
 }

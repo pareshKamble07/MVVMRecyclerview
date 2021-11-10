@@ -1,13 +1,12 @@
 package com.gigsmedia.mvvmrecyclerview.network
 
 import com.gigsmedia.mvvmrecycler.model.DataModel
-import com.gigsmedia.mvvmrecycler.model.User
-import com.google.gson.JsonArray
+import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface APIService {
 
-    @GET("users")
-    fun getUserList(): Call<JsonArray>
+    @POST("ArticleService/getArticleListing")
+    fun getUserList(): Call<DataModel>
 }

@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.gigsmedia.mvvmrecycler.R
 import com.gigsmedia.mvvmrecycler.databinding.RvUserLayoutBinding
+import com.gigsmedia.mvvmrecycler.model.Article
+import com.gigsmedia.mvvmrecycler.model.Category
 import com.gigsmedia.mvvmrecycler.model.DataModel
-import com.gigsmedia.mvvmrecycler.model.User
 
 
-class UserAdapter (val context: Context, private val mList: List<DataModel>?) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+class UserAdapter (val context: Context, private val mList: List<Article>?) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     inner class ViewHolder(var binding: RvUserLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -26,13 +28,12 @@ class UserAdapter (val context: Context, private val mList: List<DataModel>?) : 
 
         with(holder){
             with(mList?.get(position)){
-                binding.tvName.text = this!!.name
-              //  binding.tvEmail.text = this!!.email
-                Glide.with(context).load(this!!.image).into(binding.imgUser)
+                binding.tvName.text = this!!.getName()
+                binding.tvAuthor.text = this.getAuthor()
+                binding.tvCategoryname.text = this.getCategoryName()
+                Glide.with(context).load(this.getImage()).placeholder(R.drawable.ic_launcher_background).into(binding.imgUser)
             }
-
         }
-
     }
 
     // return the number of the items in the list

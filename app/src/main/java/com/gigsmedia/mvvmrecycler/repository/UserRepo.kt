@@ -1,25 +1,26 @@
 package com.gigsmedia.mvvmrecycler.repository
 
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.gigsmedia.mvvmrecycler.model.DataModel
+import com.gigsmedia.mvvmrecycler.model.Result
 import com.gigsmedia.mvvmrecycler.network.RetrofitClient
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import okhttp3.ResponseBody
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class UserRepo {
-    private val mmDeveloperModelmist = ArrayList<DataModel>()
-    private val mutableLiveData = MutableLiveData<List<DataModel>>()
+    private val mutableLiveData = MutableLiveData<DataModel>()
+
+    private var TAG = "Logger"
 
     ////call to internet and  retun  MutableLiveData
-    fun getMutableLiveData(): MutableLiveData<List<DataModel>> {
+    fun getMutableLiveData(): MutableLiveData<DataModel> {
 
         ///ini Retrofit Class
         val userDataService = RetrofitClient.service
@@ -27,51 +28,26 @@ class UserRepo {
         ///call the API that define In Interface
         val call = userDataService.getUserList()
 
-
-
-        call.enqueue(object : Callback<JsonArray> {
+        call.enqueue(object : Callback<DataModel> {
 
             internal var message: String? = null
 
-            override fun onResponse(call: Call<JsonArray>, resp: Response<JsonArray>) {
-
-                /// parse the data if  Response successfully and store data in MutableLiveData  and retrun to DeveloperViewModel class
-                val gson = GsonBuilder().create()
+            override fun onResponse(call: Call<DataModel>, resp: Response<DataModel>) {
 
                 if (resp != null && resp.body() != null) {
+                    mutableLiveData.value = resp.body()
 
-                    val json = JsonParser().parse(resp.body()!!.toString()).asJsonArray
-                    //Log.e("data",json.toString())
-                    if (json != null) {
-
-                        for (i in 0..json.size() - 1) {
-                            try {
-
-                                val jsonobj =
-                                    JsonParser().parse(json.get(i).toString()).asJsonObject
-
-                                val responseModel =
-                                    gson.fromJson(jsonobj, DataModel::class.java)
-
-                                mmDeveloperModelmist.add(responseModel)
-
-                            } catch (ex: Exception) {
-
-                            }
-
-
-                        }
-                        mutableLiveData.value = mmDeveloperModelmist
-
-                    }
+                    Log.e(TAG,resp.body().toString())
+                }else
+                {
+                    Log.e(TAG,"response is null")
                 }
-
 
             }
 
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+            override fun onFailure(call: Call<DataModel>, t: Throwable) {
                 t.printStackTrace()
-
+                Log.e(TAG,t.message.toString())
             }
         })
 
